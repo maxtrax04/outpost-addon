@@ -1,6 +1,6 @@
 {
   "name": "Outpost",
-  "version": "0.7.0-beta.12",
+  "version": "0.7.0-beta.13",
   "slug": "outpost",
   "description": "A self-hosted, themeable weather dashboard for wall displays and phones",
   "url": "https://github.com/maxtrax04/outpost",
@@ -39,7 +39,8 @@
     "effects_toggle": true,
     "clock_toggle": true,
     "alerts_always_show": false,
-    "auto_dim": true
+    "auto_dim": true,
+    "sensors": []
   },
   "schema": {
     "provider": "list(auto|openmeteo|nws|metno|pirateweather)",
@@ -75,6 +76,10 @@
     "dim_mode": "list(sun|schedule)?",
     "dim_start": "match(^([01][0-9]|2[0-3]):[0-5][0-9]$)?",
     "dim_end": "match(^([01][0-9]|2[0-3]):[0-5][0-9]$)?",
+    "sensors": [
+      "str"
+    ],
+    "sensors_interval": "int(5,3600)?",
     "frame_ancestors": "str?",
     "user_agent": "str?"
   }
