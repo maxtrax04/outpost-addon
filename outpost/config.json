@@ -1,6 +1,6 @@
 {
   "name": "Outpost",
-  "version": "0.7.0-beta.14",
+  "version": "0.7.0-beta.15",
   "slug": "outpost",
   "description": "A self-hosted, themeable weather dashboard for wall displays and phones",
   "url": "https://github.com/maxtrax04/outpost",
@@ -19,6 +19,9 @@
   "panel_admin": false,
   "homeassistant_api": true,
   "watchdog": "tcp://[HOST]:[PORT:8099]",
+  "services": [
+    "mqtt:want"
+  ],
   "ports": {
     "80/tcp": null
   },
@@ -41,7 +44,8 @@
     "alerts_always_show": false,
     "auto_dim": true,
     "sensors": [],
-    "power_grid_invert": false
+    "power_grid_invert": false,
+    "mqtt_tls": false
   },
   "schema": {
     "provider": "list(auto|openmeteo|nws|metno|pirateweather)",
@@ -86,6 +90,11 @@
     "power_grid": "str?",
     "power_grid_invert": "bool",
     "power_battery": "str?",
+    "mqtt_host": "str?",
+    "mqtt_port": "port?",
+    "mqtt_username": "str?",
+    "mqtt_password": "password?",
+    "mqtt_tls": "bool",
     "frame_ancestors": "str?",
     "user_agent": "str?"
   }
