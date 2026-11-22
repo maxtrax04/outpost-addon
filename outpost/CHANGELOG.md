@@ -6,6 +6,20 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [0.8.0-beta.2] - 2026-11-22
+
+### Added
+
+- The hourly forecast on the dashboard (#85): one box at the top of the forecast panel, between the current conditions and the days, with the next hours (as many as fit on one line, up to 12), each with its time ("Now" for the hour under way), weather icon, temperature, and chance of rain or snow. Times follow the dashboard's 12- or 24-hour clock and the location's time zone. It is on by default; `OUTPOST_HOURLY=false` hides it. Every built-in theme still fits a tablet with it shown.
+- Themes can style it: `#hourlyPanel` and `.hourly-hour`, with `data-icon` and `data-now` (see docs/themes.md).
+
+## [0.8.0-beta.1] - 2026-11-22
+
+### Added
+
+- An hourly forecast in `weather.json` (#85): `hourly` lists the next 24 hours, from the hour under way, each with its time, temperature, condition and icon, chance of rain or snow, and wind. It comes from every weather source: Open-Meteo, MET Norway, and Pirate Weather send it with the rest, and the National Weather Service's separate hourly forecast is asked for as often as the daily one. The format stays version 1 (a new field, nothing renamed). See "hourly" in docs/data-format.md. The dashboard shows it in a later beta.
+- docs/home-assistant.md: the `weather.outpost` entity gets the hourly forecast too, for Home Assistant's hourly forecast card.
+
 ## [0.7.0] - 2026-11-21
 
 Platform: each screen can show another place (location search, "Use my location", and pinned screens), a map with rain radar, a Home Assistant add-on, sensor and power panels with readings from Home Assistant or MQTT, and every built-in theme fitted to a tablet or wall display without scrolling. **Other places are allowed by default**; see "Upgrading from 0.6.0" below.
