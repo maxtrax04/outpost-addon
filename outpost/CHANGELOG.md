@@ -6,6 +6,29 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-11-26
+
+More weather detail: an hourly forecast, precipitation amounts, alert start times, and air quality with pollen, on the dashboard and in `weather.json`. Every built-in theme still fits a tablet with all of it shown. `weather.json` stays version 1 (new fields, nothing renamed); see "Upgrading from 0.7.0" below.
+
+### Added
+
+- An hourly forecast (#85). `weather.json` has `hourly`: the next 24 hours, from the hour under way, each with its time, temperature, condition and icon, chance of rain or snow, wind, and precipitation amount. It comes from every weather source: Open-Meteo, MET Norway, and Pirate Weather send it with the rest, and the National Weather Service's separate hourly forecast is asked for as often as the daily one. See "hourly" in docs/data-format.md.
+- The hourly forecast on the dashboard: one line at the top of the forecast panel, between the current conditions and the days, with as many hours as fit (up to 12), each with its time ("Now" for the hour under way), weather icon, temperature, and chance of rain or snow. Times follow the dashboard's 12- or 24-hour clock and the location's time zone. It is on by default; `OUTPOST_HOURLY=false` hides it (also a Home Assistant add-on option).
+- Precipitation amounts (#86): how much rain or snow is expected, as water (snow melted), for each forecast day and each hour, in `weather.json` as `precipitation` in `forecast` and `hourly`, in inches or millimetres by `OUTPOST_UNITS` (the new `precipitation` label in `units`). Open-Meteo, MET Norway, and Pirate Weather supply it; the National Weather Service forecast has none, so with it the amounts come from Open-Meteo, in the same request that already fills in the UV index. The dashboard shows the amount after the chance of rain on each forecast day when some is expected ("Rain: 40% · 0.25 in").
+- Alert start times (#87): each alert in `weather.json` has `onset`, when it starts, next to `expires`, from every alerts source: the National Weather Service (`onset`, or when it took effect), MET Norway's MetAlerts, and Pirate Weather. An alert that hasn't started yet says so on the dashboard: "From Nov 25, 6:00 AM until Nov 26, 6:00 PM" instead of only "Until ...", so a warning for tomorrow no longer looks as if it is in effect now. It still shows, and still turns the alerts panel red when serious.
+- Air quality and pollen (#88). `weather.json` has `air_quality`: an air quality index with its band (such as "moderate") and a level from 0 to 5, both the US AQI and the European Air Quality Index, PM2.5, PM10, ozone, nitrogen dioxide, sulphur dioxide, and carbon monoxide, and, in Europe during the season, alder, birch, grass, mugwort, olive, and ragweed pollen. It comes from the Copernicus Atmosphere Monitoring Service's forecasts through Open-Meteo's air quality API (no key), asked once an hour per place, and is credited in `sources.air_quality` and the dashboard footer. Other places get their own. See "air_quality" in docs/data-format.md.
+- Air quality on the dashboard: under the current condition, "Air quality 34 Fair", then the index's name and, when there is some, the two most plentiful kinds of pollen ("European AQI · Pollen: grass 49, birch 12"). It is hidden when there is none.
+- `OUTPOST_AIR_QUALITY` (default `true`) turns air quality off, and `OUTPOST_AIR_QUALITY_INDEX` picks the index: `auto` (the US AQI only for places in the United States and its territories, the European Air Quality Index everywhere else, including wherever that can't be told), `us`, or `european`. `auto` goes by the time zone the air quality service reports for the place, so places just across the border, such as Toronto or Tijuana, get the European index. Both are also Home Assistant add-on options.
+- If the air quality lookup fails, the last readings stay and the file is marked degraded, as with alerts; the weather still updates.
+- For theme authors (docs/themes.md): the hourly strip (`#hourlyPanel` and `.hourly-hour`, with `data-icon` and `data-now`), `.forecast-amount` and `--wx-amount` on each forecast card, `.alert-item[data-upcoming]`, and the air quality line (`.air-quality` with `data-level` from 0 to 5 and `data-category`, and `--wx-air-quality`).
+- docs/home-assistant.md: the `weather.outpost` entity gets the hourly forecast, for Home Assistant's hourly forecast card, and the precipitation amounts in its daily and hourly forecasts (`precipitation_unit`).
+
+### Upgrading from 0.7.0
+
+- `weather.json` is unchanged in what was already there (`schema_version` 1); `hourly`, `precipitation`, `onset`, `air_quality`, and `sources.air_quality` are new, so tools that read it need no changes.
+- **Outpost now also asks Open-Meteo's air quality API**, once an hour for home and for each other place shown. Set `OUTPOST_AIR_QUALITY=false` to turn that off. With the National Weather Service, the forecast also asks for its hourly forecast.
+- The hourly forecast and air quality are on by default. Set `OUTPOST_HOURLY=false` or `OUTPOST_AIR_QUALITY=false` to hide them.
+
 ## [0.7.0] - 2026-11-21
 
 Platform: each screen can show another place (location search, "Use my location", and pinned screens), a map with rain radar, a Home Assistant add-on, sensor and power panels with readings from Home Assistant or MQTT, and every built-in theme fitted to a tablet or wall display without scrolling. **Other places are allowed by default**; see "Upgrading from 0.6.0" below.
