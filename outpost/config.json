@@ -1,6 +1,6 @@
 {
   "name": "Outpost",
-  "version": "0.8.0",
+  "version": "0.9.0-beta.1",
   "slug": "outpost",
   "description": "A self-hosted, themeable weather dashboard for wall displays and phones",
   "url": "https://github.com/maxtrax04/outpost",
@@ -49,9 +49,11 @@
     "mqtt_tls": false
   },
   "schema": {
-    "provider": "list(auto|openmeteo|nws|metno|pirateweather)",
+    "provider": "list(auto|openmeteo|nws|metno|pirateweather|openweathermap)",
     "pirateweather_api_key": "password?",
-    "alerts_provider": "list(auto|nws|metno|pirateweather|none)?",
+    "openweathermap_api_key": "password?",
+    "openweathermap_plan": "list(onecall|free)?",
+    "alerts_provider": "list(auto|nws|metno|pirateweather|openweathermap|none)?",
     "contact": "str?",
     "location_name": "str?",
     "latitude": "float(-90,90)?",
